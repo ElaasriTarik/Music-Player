@@ -1,0 +1,140 @@
+.music-box {
+  scroll-behavior: smooth;
+}
+body {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap:10px;
+  padding-top: 80px;
+  background-color: #09040f;
+}
+* {
+  font-family: Trebuchet MS;
+  box-sizing: border-box;
+}
+.icon {
+  width: 12px;
+}
+.music-box {
+  width: 300px;
+  height: 430px;
+  background-color: grey;
+  border-radius: 7px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 8px 1px #393966;}
+.settings {
+  width: 100%;
+  height: 60px;
+  background-color: #6194a8;
+  box-shadow: -4px 0 10px 2px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:35px;
+  position: absolute;
+  bottom: 0;
+  filter: blur(0.3px);
+  background-image: linear-gradient(to right, #db57a0e6, #053a7c70);
+}
+.settings .previousBtn, .nextBtn {
+  cursor: pointer;
+  border: px solid white;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.settings > div {
+  box-shadow: 0 0 10px 0 #55796d;
+  position: relative;
+  background-color: #7399a6;
+}
+.settings > div:hover {
+  transform: scale(1.04);
+  background-color: #d9dde1;
+}
+.settings .pausePlay {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #353535;
+  border-radius: 50%;
+  width: 40px;
+  aspect-ratio: 1;
+}
+.settings .pausePlay img {
+  width: 16px;
+}
+.previewImage {
+  width: 100%;
+}
+.songs-preview {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+}
+.songs-preview h1 {
+  color: #ff8e8e;
+  letter-spacing: 3px;
+  margin-top: 5px;
+  z-index: 100;
+  -webkit-text-stroke: 0.5px black;
+}
+.songs-preview .songBox {
+  width: 94%;
+  max-height: 60px;
+  margin-bottom: 5px;
+  background-color: rgba(100%, 100%, 100%, 60%);
+  filter: opacity(75%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  padding: 5px 5px;
+  border-radius: 3px;
+}
+.songBox .nameOfSong {
+  font-size: 16px;
+  position: relative;
+}
+.songBox .imageBox {
+  max-width: 45px;
+  aspect-ratio: 1;
+  position: relative;
+  border: 2px solid #ead2d2;
+  outline: 0;
+  border-radius: 3px;
+  background-position: top;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+.songBox .songCover {
+  width: 100%;
+  height: auto;
+}
+.listOfSongs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+input[type="file"] {
+  width: 210px;
+  background-color: violet;
+  border-radius: 3px;
+  cursor: pointer;
+
+}
