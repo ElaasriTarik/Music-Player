@@ -6,13 +6,16 @@ let playAndPauseIcon = document.querySelector('.playAndPauseIcon');
 let listOfSongs = document.querySelector('.listOfSongs');
 const images = ['/images/a.jpg', '/images/b.jpg', '/images/c.jpg', '/images/d.jpg', '/images/e.jpg', '/images/f.jpg', '/images/g.jpg', '/images/h.jpg', '/images/i.jpg'];
 let htmlSongsPreview = '';
+let timeIndicator = document.querySelector('.songCurrentTime');
+let thisTime = 0;
 let songBoxes = '';
 let musicLibrary = [];
 let playingSounds = [];
-let input = document.querySelector('input');
+let input = document.querySelector('.inputFiles');
 let sound = '';
 let status = false;
 let k = 0;
+let moveIndicId;
 //let songName = '';
 let gotFile = [];
 let pathsArr = [];
@@ -40,7 +43,7 @@ input.addEventListener('change', (e) => {
    songsPaths.unshift(songPath)
    htmlSongsPreview = musicLibrary.map((item) => {
      return `
-     <div class="songBox ${item.path}">
+     <div class="songBox">
      <div class="imageBox">
       <img src="${item.cover}" alt="" class="songCover">
      </div>
@@ -58,22 +61,27 @@ input.addEventListener('change', (e) => {
             let thisPath = e.target.classList[1];
             sound = new Audio(thisPath);
             playingSounds.unshift(sound);
+            k = i;
             for (let j = 0; j < playingSounds.length; j++) {
               if (j > 0) {
                playingSounds[j].pause()
               }
             }
+            checkThisSong()
+            sound.setAttribute('preload','metadata');
             sound.play();
-          for (var k = 0; k < songBoxes.length; k++) {
-                songBoxes[k].parentElement.style.backgroundColor = 'rgba(100%, 100%, 100%, 60%)';
-                songBoxes[k].parentElement.style.color = "black";
-                songBoxes[i].parentElement.style.filter = 'opacity(75%)';
-          }
-            item.parentElement.style.backgroundColor = 'rgba(100, 100, 100, 80%)';
+            item.parentElement.style.backgroundColor = 'rgba(255, 92, 197, 0.7)';
             item.parentElement.style.color = "white";
             songBoxes[i].parentElement.style.filter = 'opacity(100%)';
             playAndPauseIcon.src = 'pause-solid.svg';
+            sound.onloadedmetadata = () => {
+              //getDuration(sound)
+                currentT()
+            }
+              timeIndicator.style.animationName = 'none';
+            thisTime = 0;
             status = true;
+
         }
       }
   })
@@ -81,17 +89,25 @@ input.addEventListener('change', (e) => {
 // document.querySelector('audio').setAttribute('src',songPath)
   addSong(musicLibrary);
 })
-let spaceBar =false;
 pausePlay.addEventListener('click', () => {
     if (!status) {
      sound.play();
      playAndPauseIcon.src = 'pause-solid.svg';
+     timeIndicator.style.animationPlayState = 'running';
      status = true;
+     if (moveIndicId === null) {
+       moveIndicId = setInterval(moveIndic, 1000);
+     }
+
    } else if (status){
      playAndPauseIcon.src = 'play-solid.svg';
      sound.pause();
      status = false;
+     timeIndicator.style.animationPlayState = 'paused';
+     clearInterval(moveIndicId);
+     moveIndicId = null;
    }
+      checkThisSong()
   })
 
 nextBtn.addEventListener('click', (e) => {
@@ -100,6 +116,7 @@ nextBtn.addEventListener('click', (e) => {
      k =0;
   }
   sound = new Audio(musicLibrary[k].path);
+
   playingSounds.unshift(sound);
   for (var i = 0; i < playingSounds.length; i++) {
     if (i > 0) {
@@ -107,6 +124,12 @@ nextBtn.addEventListener('click', (e) => {
     }
   }
   sound.play()
+  sound.onloadedmetadata = () => {
+    //getDuration(sound)
+    thisTime = 0;
+    moveIndic();
+
+  }
   playAndPauseIcon.src = 'pause-solid.svg';
   checkThisSong()
 })
@@ -122,7 +145,13 @@ previousBtn.addEventListener('click', (e) => {
      playingSounds[i].pause();
     }
   }
+  sound.setAttribute('preload','metadata')
   sound.play()
+  sound.onloadedmetadata = () => {
+    //getDuration(soound)
+    thisTime = 0;
+    moveIndic()
+  }
   playAndPauseIcon.src = 'pause-solid.svg';
   checkThisSong()
 })
@@ -132,20 +161,40 @@ let addSong = (library) => {
 }
 function checkThisSong(){
    for (var i = 0; i < songBoxes.length; i++) {
-           songBoxes[i].parentElement.style.backgroundColor = 'rgba(100%, 100%, 100%, 60%)';
+           songBoxes[i].parentElement.style.backgroundColor = 'rgba(255, 253, 253, 0.93)';
            songBoxes[i].parentElement.style.color = "black";
            songBoxes[i].parentElement.style.filter = 'opacity(75%)';
     if (songBoxes[i].classList[1] === playingSounds[0].src) {
-      songBoxes[i].parentElement.style.backgroundColor = 'rgba(100, 100, 100, 100%)';
+      songBoxes[i].parentElement.style.backgroundColor = 'rgba(255, 92, 197, 0.7)';
       songBoxes[i].parentElement.style.color = "white";
       songBoxes[i].parentElement.style.filter = 'opacity(100%)';
-      status = true;
     }
    }
 }
-let body = document.querySelector('body');
-body.addEventListener('dblclick', (e) => {
-  if (!sound) {
-    console.log('hello world');
+let d;
+function getDuration(so){
+  d = so.duration;
+
+  // timeIndicator.style.width = '0px';
+   timeIndicator.style.animation = `widthOfIndicator ${d}s linear`;
+}
+function currentT() {
+  timeIndicator.setAttribute('min','0')
+  timeIndicator.setAttribute('max',`${sound.duration}`);
+  let intervalTime = parseInt(sound.duration *1000/timeIndicator.offsetWidth);
+  moveIndicId = setInterval(moveIndic, 1000);
+
+}
+function moveIndic() {
+  if (thisTime == parseInt(sound.duration)) {
+   clearInterval(moveIndicId);
   }
+ thisTime += 1;
+ timeIndicator.value = thisTime;
+}
+timeIndicator.addEventListener('click', (e) => {
+  thisTime = parseInt(e.target.value);
+  timeIndicator.value = thisTime;
+  sound.currentTime = thisTime;
+  moveIndic();
 })
