@@ -5,29 +5,23 @@ const musicBox = document.querySelector('.music-box');
 let playAndPauseIcon = document.querySelector('.playAndPauseIcon');
 let listOfSongs = document.querySelector('.listOfSongs');
 const images = ['/images/a.jpg', '/images/b.jpg', '/images/c.jpg', '/images/d.jpg', '/images/e.jpg', '/images/f.jpg', '/images/g.jpg', '/images/h.jpg', '/images/i.jpg'];
+let songDur;
+let currentSongTime = document.querySelector('.currentSongTime');
+let songDurationHtml = document.querySelector('.songDurationHtml')
 let htmlSongsPreview = '';
 let timeIndicator = document.querySelector('.songCurrentTime');
-let thisTime = 0;
-let songBoxes = '';
+let thisTime;
+let songBoxes;
 let musicLibrary = [];
 let playingSounds = [];
 let input = document.querySelector('.inputFiles');
-let sound = '';
+let sound;
 let status = false;
 let k = 0;
 let moveIndicId;
 //let songName = '';
 let gotFile = [];
 let pathsArr = [];
-input.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  //input.files = e.dataTransfer.files;
-  input.style.border = "1px dashed #262626";
-})
-input.addEventListener('drop', (e) => {
-  e.preventDefault();
-  input.style.border = "0px dashed grey";
-})
 input.addEventListener('change', (e) => {
  let objS = [];
  gotFile = input.files;
@@ -75,13 +69,15 @@ input.addEventListener('change', (e) => {
             songBoxes[i].parentElement.style.filter = 'opacity(100%)';
             playAndPauseIcon.src = 'pause-solid.svg';
             sound.onloadedmetadata = () => {
-              //getDuration(sound)
+                //getDuration(sound)
                 currentT()
+                moveIndic()
+                displaySongDuration(sound)
+                songDur = sound.duration;
             }
               timeIndicator.style.animationName = 'none';
             thisTime = 0;
             status = true;
-
         }
       }
   })
@@ -98,7 +94,6 @@ pausePlay.addEventListener('click', () => {
      if (moveIndicId === null) {
        moveIndicId = setInterval(moveIndic, 1000);
      }
-
    } else if (status){
      playAndPauseIcon.src = 'play-solid.svg';
      sound.pause();
@@ -127,7 +122,10 @@ nextBtn.addEventListener('click', (e) => {
   sound.onloadedmetadata = () => {
     //getDuration(sound)
     thisTime = 0;
+    currentT();
     moveIndic();
+    displaySongDuration(sound)
+    songDur = sound.duration;
 
   }
   playAndPauseIcon.src = 'pause-solid.svg';
@@ -151,6 +149,9 @@ previousBtn.addEventListener('click', (e) => {
     //getDuration(soound)
     thisTime = 0;
     moveIndic()
+    currentT()
+    displaySongDuration(sound)
+    songDur = sound.duration;
   }
   playAndPauseIcon.src = 'pause-solid.svg';
   checkThisSong()
@@ -172,29 +173,72 @@ function checkThisSong(){
    }
 }
 let d;
-function getDuration(so){
-  d = so.duration;
+function getDuration(){
+  d = sound.duration;
 
   // timeIndicator.style.width = '0px';
-   timeIndicator.style.animation = `widthOfIndicator ${d}s linear`;
+   //timeIndicator.style.animation = `widthOfIndicator ${d}s linear`;
 }
 function currentT() {
-  timeIndicator.setAttribute('min','0')
-  timeIndicator.setAttribute('max',`${sound.duration}`);
-  let intervalTime = parseInt(sound.duration *1000/timeIndicator.offsetWidth);
+  //timeIndicator.setAttribute('min','0')
+  timeIndicator.setAttribute('max',`${Math.round(sound.duration)}`);
+  //let intervalTime = parseInt(sound.duration *1000/timeIndicator.offsetWidth);
   moveIndicId = setInterval(moveIndic, 1000);
-
+ console.log(sound.duration);
 }
 function moveIndic() {
-  if (thisTime == parseInt(sound.duration)) {
+  if (thisTime === parseInt(sound.duration)) {
    clearInterval(moveIndicId);
   }
  thisTime += 1;
  timeIndicator.value = thisTime;
 }
+
 timeIndicator.addEventListener('click', (e) => {
   thisTime = parseInt(e.target.value);
   timeIndicator.value = thisTime;
   sound.currentTime = thisTime;
+  console.log(thisTime, timeIndicator.value, sound.currentTime, sound);
   moveIndic();
 })
+function displaySongDuration(song) {
+  let curMins = 0;
+  let curSec = 0;
+  let mins = 0;
+  let sec = 0;
+    let ss = song.duration;
+    for (var i = 0; i < ss; i++) {
+      if (ss > 60) {
+        ss -= 60;
+        mins += 1;
+      } else if(ss < 60) {
+        if (ss < 10) {
+          sec = ss.toFixed()
+          sec = '0' + sec;
+        } else {
+          sec = parseInt(ss.toFixed());
+        }
+      }
+    }
+    songDurationHtml.innerHTML = `${mins}:${sec}`;
+    let inter = setInterval(() => {
+      if (song.duration === song.currentTime) {
+        return null;
+      }
+        let dur = song.duration.toFixed();
+        curSec += 1;
+        let str = (curSec < 10) ? '0' + curSec: curSec;
+        if (curSec == 60) {
+          curMins += 1;
+          curSec = 0;
+        }
+        currentSongTime.innerHTML = `${curMins}:${str}`;
+    },1000)
+    songBoxes = document.querySelectorAll('.nameOfSong');
+    [...songBoxes, pausePlay, nextBtn, previousBtn].forEach((item, i) => {
+      item.addEventListener('click', () => {
+        clearInterval(inter)
+      })
+    });
+
+}
