@@ -17,19 +17,32 @@
       <img src="d2a27f3a9675d50800cc38e5d783905f.jpg" class="previewImage">
       <div class="settings">
         <!-- <span class="songDuration"></span>-->
-        <input type="range" class="songCurrentTime" value="0">
-         <div class="previousBtn">
+        <input type="range" class="songCurrentTime" value="0" min="0">
+        <div class="timerBox">
+            <div class="currentSongTime">
+                <span class="currentMinutes">00:</span><span class="currentSeconds">12</span>
+            </div>
+            <div class="songDurationHtml">
+                <span class="durationMinutes">03:</span><span class="durationSeconds">12</span>
+            </div>
+        </div>
+        <div class="musicControl">
+
+          <div class="previousBtn controlBtns">
             <img src="backward-step-solid.svg" class="icon">
-         </div>
-         <div class="pausePlay" draggable="true">
+          </div>
+          <div class="pausePlay controlBtns" draggable="true">
             <img src="play-solid.svg" class="icon playAndPauseIcon">
-         </div>
-         <div class="nextBtn" draggable="true">
+          </div>
+          <div class="nextBtn controlBtns" draggable="true">
             <img src="forward-step-solid.svg" class="icon">
-         </div>
+          </div>
+        </div>
       </div>
     </div>
-    <input type="file" multiple style="color:white" accept="audio/*" class="inputFiles">
+    <div class="filesBox">
+      <input type="file" multiple accept="audio/*" class="inputFiles">
+    </div>
 
     <script type="text/javascript" src="howler.js"></script>
   </body>
