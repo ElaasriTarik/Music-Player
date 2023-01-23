@@ -42,6 +42,7 @@ body {
   bottom: 0;
   filter: blur(0.3px);
   background-image: linear-gradient(to right, #db57a0e6, #053a7c70);
+  z-index: 1000;
 }
 .musicControl {
   display: flex;
@@ -52,7 +53,7 @@ body {
   padding: 0 4rem;
   height: 100%;
   margin-bottom: 10px;
-  z-index: 0;
+  z-index: 100;
 }
 .settings .previousBtn, .nextBtn {
   cursor: pointer;
@@ -92,7 +93,7 @@ body {
   flex-direction: column;
   width: 100%;
   height: calc(100% - 60px);
-  overflow-y: auto;
+  overflow: auto;
   padding-bottom: 1.3rem;
   scrollbar-width: thin;
   scrollbar-color: pink black;
@@ -107,11 +108,14 @@ body {
   background: pink;
 }
 .songs-preview h1 {
-  color: #ff8e8e;
-  letter-spacing: 3px;
-  margin-top: 5px;
-  z-index: 100;
-  -webkit-text-stroke: 0.5px black;
+  color: #ffd6d6;
+letter-spacing: 3px;
+margin-top: 5px;
+z-index: 10;
+-webkit-text-stroke: 0.5px #447366;
+font-family: monospace;
+font-weight: 800;
+font-size: 28px;
 }
 .songs-preview .songBox {
   width: 94%;
@@ -123,14 +127,17 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 5px;
   padding: 5px 5px;
   border-radius: 3px;
 }
 .songBox .nameOfSong {
   font-size: 13px;
+  font-weight: 700;
+  line-height: 14px;
   position: relative;
+  color: #0e5b42;
 }
 .songBox .imageBox {
   max-width: 45px;
@@ -142,7 +149,7 @@ body {
   border-radius: 3px;
   background-position: top;
   background-size: cover;
-  background-color: rgba(255, 253, 253, 0.93);
+  b ackground-color: rgba(255, 253, 253, 0.93);
   position: relative;
   overflow: hidden;
 }
@@ -174,19 +181,7 @@ input[type="file"] {
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
 }
-@keyframes widthOfIndicator {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
-}
-@keyframes zero {
-  100% {
-    width: 0;
-  }
-}
+
 .songCurrentTime {
   position: absolute;
   top: -3px;
@@ -206,7 +201,7 @@ input[type="file"] {
   height: 5px;
   background: #bd7979;
   border-radius: 500px;
-  overflow: hidden;
+  z-index: 100;
 }
 .timerBox {
   display: flex;
@@ -244,4 +239,304 @@ input[type="file"] {
   width: 100%;
   height: 100%;
   opacity: 0;
+}
+.heartOptionIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2px;
+  position: relative;
+}
+svg {
+  width: 27px;
+  height: 100%;
+  cursor: pointer;
+}
+.options {
+  width: 20px;
+  height: 40px;
+}
+.playlistAndMore {
+  width: 70%;
+  height: 100%;
+  background-color: #88659b;
+  filter: opacity(90%);
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: -70%;
+  transition: all 0.3s linear;
+}
+.openMenu {
+  width: 20px;
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  z-index: 10000;
+  display: block;
+}
+.openMenu svg {
+  width: 100%;
+}
+.addPlaylist {
+  width:27%;
+  height: 26px;
+  position: relative;
+  top: 40px;
+  left: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: space-BETWEEN;
+  gap: 10px;
+  flex-direction: row;
+  padding: 5px;
+  cursor: pointer;
+}
+.addPlaylist img {
+  width: 20px;
+  position: absolute;
+  padding-left: 2px;
+  display: block;
+  z-index: 1000;
+}
+.playlistBtn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: ghostwhite;
+  color: black;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 0 10px;
+  border-radius: 2px;
+  bord er: 1px solid white;
+  border: 0;
+  box-shadow: 0 0 2px #262626;
+  cursor: pointer;
+  text-align: right;
+}
+.myPlaylists {
+  position: relative;
+  top: 30px;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+.playListLabl {
+  font-size: 20px;
+  color: white;
+  border-bottom: 1px solid;
+  margin-bottom: 0px;
+}
+.playlistTbale {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px 0 4px 0px;
+  overflow: auto;
+}
+.playlistBox {
+  width: 100%;
+  max-height: 150px;
+  display: flex;
+  background-color: azure;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0px;
+  padding: 0 4px;
+  overflow: visible;
+}
+.playlistInfo{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+  height: 50%;
+  align-items: center;
+}
+.playlistInfo > div > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  justify-content: center;
+  gap: 4px;
+}
+.playlistInfo > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+}
+.playlistBox .mySongs {
+  width: 100%;
+  height: 0;
+  position: absolute;
+  top: 100%;
+  background-color: #353535;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: pink white;
+  z-index: 10;
+}
+.playlistInfo img {
+  width: 20px;
+  cursor: pointer;
+}
+.playlistBox h1{
+  font-size: 15px;
+  color: #353535;
+}
+.items {
+  font-size: 10px;
+  color: black;
+}
+.pickPlayName {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  height: 34%;
+  background: black;
+  filter: opacity(97%);
+  position: absolute;
+  top: 19%;
+  left: 0;
+  padding: 0 20px;
+  gap: 5px;
+  border-radius: 10px;
+  z-index: 1000;
+}
+.playlistInputName {
+  width: 100%;
+  height: 30px;
+  padding-left: 4px;
+  border: 1px solid pink;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+.pickThis {
+  cursor: pointer;
+  width: 60%;
+  background-color: orangered;
+  border: 1px solid grey;
+  border-radius: 2px;
+  padding: 5px 0;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+.pickPlayName h3 {
+  color: azure;
+  margin-bottom: 20px;
+}
+.pickAplaylist {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 240px;
+  padding: 5px;
+  height: 160px;
+  position: relative;
+  top: -120%;
+  left: 1%;
+  z-index: 1000;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: pink white;
+  border-radius: 5px;
+  border: 2px solid violet;
+}
+.pickAplaylist::-webkit-scrollbar {
+  width: 5px;
+}
+.pickAplaylist::-webkit-scrollbar-track {
+  background: black;
+}
+.pickAplaylist::-webkit-scrollbar-thumb {
+  background: pink;
+}
+.playlistsBoxesChoices {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-around;
+  margin: auto;
+}
+.playlistChoices {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: lightblue;
+  cursor: pointer;
+}
+.playlistChoices:hover {
+  border: 1px solid pink;
+}
+.playlistChoices > div{
+  display: flex;
+  flex-direction: row;
+}
+.playlistChoices > div > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 5px;
+}
+.playlistName {
+  font-size: 15px;
+  font-weight: 800;
+}
+.pickAplaylist > img,  .pickAplaylist > div > img{
+  width: 15px;
+}
+.favouriteSong {
+  display: flex;
+align-items: center;
+flex-direction: row;
+gap: 8px;
+background-color: #817ad0;
+height: 40px;
+width: 100%;
+padding: 4px;
+overflow: hidden;
+}
+.chosenSongImage {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  background-color: lightgrey;
+}
+.chosenSongImage img {
+  width: 100%;
+
+}
+.chosenSongName {
+  font-size: 12px;
+  color: azure;
+  width: 100%;
 }
